@@ -54,10 +54,8 @@ Almost nothing needs a component change. The copy lives in `src/data/`:
 | File | Contents |
 | --- | --- |
 | `src/data/site.ts` | Name, role, location, email, tagline, **social links**, resume filenames. |
-| `src/data/metrics.ts` | The four animated counters under the hero. |
 | `src/data/experience.ts` | Roles, bullet points, tech tags, education, certifications. |
 | `src/data/skills.ts` | Toolkit groups. |
-| `src/data/principles.ts` | The "Approach" cards. |
 | `src/data/projects.ts` | **Projects and their case-study pages.** |
 
 ### Things to replace before sharing the link

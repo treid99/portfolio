@@ -29,13 +29,6 @@ test.describe('homepage', () => {
     }
   })
 
-  test('metric counters settle on their final values', async ({ page }) => {
-    const metrics = page.locator('.metrics__value')
-    await page.locator('.metrics').scrollIntoViewIfNeeded()
-    await expect(metrics.first()).toHaveText('10×', { timeout: 5000 })
-    await expect(metrics.nth(1)).toHaveText('4,000+')
-  })
-
   test('the page has exactly one h1', async ({ page }) => {
     await expect(page.locator('h1')).toHaveCount(1)
   })
@@ -195,9 +188,6 @@ test.describe('reduced motion', () => {
     // Reveals render in place rather than waiting for a scroll trigger.
     await expect(page.locator('#contact .contact__panel')).toBeVisible()
     await expect(page.locator('#contact .contact__panel')).toHaveCSS('opacity', '1')
-
-    // Counters show their final value without needing to be scrolled to.
-    await expect(page.locator('.metrics__value').first()).toHaveText('10×')
 
     // The pipeline shows a completed pass instead of looping.
     await page.locator('.pipeline').scrollIntoViewIfNeeded()

@@ -27,6 +27,7 @@ build/
 .next/
 out/
 .cache/
+.vite/
 
 # --- Python ---
 __pycache__/
@@ -50,3 +51,15 @@ playwright/.cache/
 # Screenshots and notes from a signed-in internal install: real ticket ids,
 # service names, environment URLs. Never committed, never served from public/.
 private/
+
+# --- Retired sections (kept locally, not published) ---
+# The Metrics band and Approach cards were removed from Home.tsx. The files
+# stay on disk so the sections can be restored, but nothing imports them, so
+# they are not part of the built site. See the note at the top of
+# Experience.css for the spacing rule that depends on Metrics being absent.
+src/components/Metrics.tsx
+src/components/Metrics.css
+src/components/Approach.tsx
+src/components/Approach.css
+src/data/metrics.ts
+src/data/principles.ts
