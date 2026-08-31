@@ -39,3 +39,14 @@ venv/
 # --- Logs / temp ---
 *.log
 tmp/
+
+# --- Playwright ---
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# --- Work-project source material ---
+# Screenshots and notes from a signed-in internal install: real ticket ids,
+# service names, environment URLs. Never committed, never served from public/.
+private/

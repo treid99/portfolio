@@ -1,0 +1,16 @@
+.nf {
+  min-height: 62vh;
+  display: flex;
+  align-items: center;
+}
+
+.nf__inner {
+  max-width: 56ch;
+}
+
+.nf__actions {
+  margin-top: var(--space-6);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}

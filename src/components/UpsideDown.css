@@ -1,0 +1,373 @@
+/* ============================================================
+   Upside Down easter egg.
+
+   Deliberately theme-independent: the other side looks the same
+   whether the visitor is in light or dark mode, so these colors
+   are literal rather than tokens.
+   ============================================================ */
+
+.ud-trigger {
+  position: relative;
+  cursor: crosshair;
+  transition:
+    color 0.35s var(--ease-out),
+    text-shadow 0.35s var(--ease-out);
+}
+
+.ud-trigger--open {
+  color: #ff3b32;
+  text-shadow:
+    0 0 6px rgba(255, 46, 38, 0.9),
+    0 0 18px rgba(255, 20, 16, 0.65),
+    0 0 44px rgba(220, 0, 0, 0.45);
+}
+
+.ud {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  pointer-events: none;
+  overflow: hidden;
+
+  /*
+   * Cloud texture, generated rather than shipped: fractal-noise turbulence
+   * collapsed to black with the noise driving alpha, then blurred so it reads
+   * as billow instead of static. Two seeds so stacked sheets don't visibly
+   * repeat each other. Rasterised once per size by the browser, after which the
+   * sheets are only ever transformed — which is what keeps this affordable.
+   */
+  --ud-cloud-a: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.014' numOctaves='5' seed='5'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.5 0 0 0 -0.62'/%3E%3CfeGaussianBlur stdDeviation='3.5'/%3E%3C/filter%3E%3Crect width='1200' height='800' filter='url(%23c)'/%3E%3C/svg%3E");
+  --ud-cloud-lit: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='5' seed='31'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 0.3 0 0 0 0 0.13 2 0 0 0 -0.78'/%3E%3CfeGaussianBlur stdDeviation='4'/%3E%3C/filter%3E%3Crect width='1200' height='800' filter='url(%23c)'/%3E%3C/svg%3E");
+  --ud-cloud-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='5' seed='19'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.2 0 0 0 -0.55'/%3E%3CfeGaussianBlur stdDeviation='3'/%3E%3C/filter%3E%3Crect width='1200' height='800' filter='url(%23c)'/%3E%3C/svg%3E");
+}
+
+/*
+ * A glowing rim on the tear itself. Lives outside .ud__layers so the mask that
+ * clears the trigger word doesn't erase this too.
+ */
+.ud__rim {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--ud-x) var(--ud-y),
+    transparent 0,
+    transparent 30px,
+    rgba(255, 72, 48, 0.5) 52px,
+    rgba(196, 20, 20, 0.26) 92px,
+    transparent 156px
+  );
+  mix-blend-mode: screen;
+}
+
+/*
+ * The rift is masked open around the trigger word. Without this the scrim
+ * would swallow the very text the visitor is hovering.
+ *
+ * Isolated so the screen-blended glow and cloud layers composite against this
+ * group's own scrim rather than against the page behind it — without that, a
+ * light-theme page turns every screen blend into a pale wash and the storm
+ * looks nothing like it does in dark.
+ */
+.ud__layers {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  /*
+   * A near-opaque floor under the whole group. The page's own background would
+   * otherwise show through and tint everything above it, which is why a light
+   * theme washed the lower half out to grey. At this alpha the page is still
+   * faintly legible underneath in either theme.
+   */
+  background: rgba(8, 2, 4, 0.88);
+  mask-image: radial-gradient(
+    circle at var(--ud-x) var(--ud-y),
+    transparent 0,
+    transparent 26px,
+    #000 104px
+  );
+  -webkit-mask-image: radial-gradient(
+    circle at var(--ud-x) var(--ud-y),
+    transparent 0,
+    transparent 26px,
+    #000 104px
+  );
+}
+
+/* Dark wash: heaviest along the top edge where the storm sits. */
+.ud__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(6, 1, 3, 0.34) 0%, rgba(6, 1, 3, 0.12) 36%, transparent 60%),
+    radial-gradient(
+      circle at var(--ud-x) var(--ud-y),
+      rgba(128, 10, 14, 0.44) 0%,
+      rgba(30, 4, 7, 0.84) 34%,
+      rgba(6, 2, 4, 0.95) 100%
+    );
+}
+
+/* Furnace glow behind the cloud, so the gaps in it read as lit from within. */
+.ud__ember {
+  position: absolute;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+.ud__ember--a {
+  top: -16%;
+  left: -4%;
+  width: 58vw;
+  height: 44vh;
+  background: radial-gradient(
+    ellipse closest-side,
+    rgba(232, 34, 24, 0.8) 0%,
+    rgba(214, 26, 20, 0.34) 46%,
+    transparent 100%
+  );
+}
+
+.ud__ember--b {
+  top: -10%;
+  right: -6%;
+  width: 52vw;
+  height: 40vh;
+  background: radial-gradient(
+    ellipse closest-side,
+    rgba(246, 86, 32, 0.62) 0%,
+    rgba(226, 60, 26, 0.26) 48%,
+    transparent 100%
+  );
+}
+
+.ud__ember--c {
+  top: -22%;
+  left: -10%;
+  width: 120vw;
+  height: 58vh;
+  background: radial-gradient(
+    ellipse closest-side,
+    rgba(252, 72, 32, 0.5) 0%,
+    rgba(232, 50, 24, 0.2) 48%,
+    transparent 100%
+  );
+}
+
+/* ---------------- Cloud front ---------------- */
+
+/*
+ * The mask lives on the outer element so it stays put while the inner sheet
+ * drifts, and the sheet is oversized so drifting never drags an edge into view.
+ */
+.ud__cloud {
+  position: absolute;
+  overflow: hidden;
+}
+
+.ud__cloud-body {
+  position: absolute;
+  inset: -12%;
+  background-image: var(--ud-cloud-a);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* These drift for as long as the rift is open, so promote them once up front. */
+.ud__cloud-body {
+  will-change: transform;
+}
+
+.ud__cloud--top-back {
+  top: 0;
+  left: -25%;
+  width: 150%;
+  height: 74%;
+  opacity: 0.9;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 38%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 38%, transparent 100%);
+}
+
+.ud__cloud--left {
+  top: -6%;
+  left: -20%;
+  width: 88%;
+  height: 74%;
+  opacity: 0.8;
+  mask-image: radial-gradient(115% 100% at 0% 6%, #000 0%, #000 26%, transparent 74%);
+  -webkit-mask-image: radial-gradient(115% 100% at 0% 6%, #000 0%, #000 26%, transparent 74%);
+}
+
+.ud__cloud--right {
+  top: -6%;
+  right: -20%;
+  width: 88%;
+  height: 74%;
+  opacity: 0.8;
+  mask-image: radial-gradient(115% 100% at 100% 6%, #000 0%, #000 26%, transparent 74%);
+  -webkit-mask-image: radial-gradient(115% 100% at 100% 6%, #000 0%, #000 26%, transparent 74%);
+}
+
+.ud__cloud--left .ud__cloud-body,
+.ud__cloud--right .ud__cloud-body {
+  background-image: var(--ud-cloud-b);
+}
+
+/* Drawn after the Flayer, to veil it rather than reveal it whole. */
+.ud__cloud--top-front {
+  top: 0;
+  left: -25%;
+  width: 150%;
+  height: 60%;
+  opacity: 0.62;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 26%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 26%, transparent 96%);
+}
+
+.ud__cloud--top-front .ud__cloud-body {
+  background-image: var(--ud-cloud-b);
+}
+
+.ud__cloud--lit {
+  top: -4%;
+  left: -25%;
+  width: 150%;
+  height: 70%;
+  opacity: 0.62;
+  mix-blend-mode: screen;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 96%);
+}
+
+.ud__cloud--lit .ud__cloud-body {
+  background-image: var(--ud-cloud-lit);
+}
+
+/* Ground fog: the same texture at a fraction of the weight of the cloud above. */
+.ud__fog {
+  position: absolute;
+  inset: auto -10% 0 -10%;
+  height: 34%;
+  opacity: 0.4;
+  background-image: var(--ud-cloud-a);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  mask-image: linear-gradient(to top, #000 0%, transparent 88%);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 88%);
+}
+
+/* ---------------- The Mind Flayer ---------------- */
+
+/*
+ * Centred with auto margins rather than a translate, because motion writes its
+ * own inline transform here and would clobber a translateX(-50%). Heavily
+ * blurred and barely opaque: it should resolve out of the cloud as the eye
+ * adjusts, not announce itself. The mask dissolves its crown into the sheet
+ * above and its tentacle tips into the murk below.
+ */
+.ud__flayer {
+  position: absolute;
+  left: 50%;
+  top: -7%;
+  /*
+   * Centred with a negative margin, not `margin-inline: auto` and not a
+   * translate. Auto margins collapse to zero once an absolutely positioned box
+   * is wider than its container — which this one always is — silently pinning
+   * it to the left edge, and motion owns the transform property here.
+   */
+  --ud-flayer-width: min(104vw, 1700px);
+  width: var(--ud-flayer-width);
+  margin-left: calc(var(--ud-flayer-width) / -2);
+  opacity: 0.26;
+  filter: blur(4px);
+  /*
+   * Feathered wide enough that the tentacle tips are still legible out near the
+   * edges — a tighter falloff erased the reach the wide field buys.
+   */
+  mask-image: radial-gradient(78% 62% at 50% 42%, #000 0%, #000 52%, transparent 96%);
+  -webkit-mask-image: radial-gradient(78% 62% at 50% 42%, #000 0%, #000 52%, transparent 96%);
+}
+
+.ud__flayer svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ud__flayer-ink {
+  fill: #170a08;
+}
+
+/* ---------------- Lightning ---------------- */
+
+.ud__storm {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ud__bolt-glow path {
+  fill: none;
+  stroke: #ff3320;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/*
+ * The glow is three concentric strokes rather than a blurred one. A blur filter
+ * on geometry that animates has to be recomputed every frame; stacked strokes
+ * cost nothing and read the same at this scale.
+ */
+.ud__bolt-glow--wide path {
+  stroke-width: 13;
+  opacity: 0.14;
+}
+
+.ud__bolt-glow--mid path {
+  stroke-width: 7;
+  opacity: 0.26;
+}
+
+.ud__bolt-glow--tight path {
+  stroke-width: 3.4;
+  opacity: 0.5;
+}
+
+.ud__bolt-core path {
+  fill: none;
+  stroke: #ffe4d6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+}
+
+/* ---------------- Airborne debris ---------------- */
+
+.ud__spores {
+  position: absolute;
+  inset: 0;
+}
+
+.ud__spore {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1d0c0b 38%, rgba(29, 12, 11, 0) 72%);
+}
+
+.ud__spore--ember {
+  background: radial-gradient(circle, #ffd6bc 34%, rgba(255, 150, 110, 0) 74%);
+}
+
+/*
+ * The field is 3:1, so sizing this one to the viewport width leaves it too
+ * short on a narrow screen and crowds the head against the top edge. Oversizing
+ * it keeps the head at the same proportion it has on desktop and simply runs
+ * the tentacles off both sides.
+ */
+@media (max-width: 720px) {
+  .ud__flayer {
+    --ud-flayer-width: 340vw;
+  }
+}

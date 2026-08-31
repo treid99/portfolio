@@ -1,0 +1,54 @@
+.pipeline {
+  margin-top: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(120% 140% at 50% -20%, var(--accent-soft) 0%, transparent 60%),
+    var(--surface);
+  box-shadow: var(--shadow-sm);
+  padding: clamp(1rem, 2.5vw, 1.75rem) 0;
+}
+
+/* Narrow screens scroll the diagram rather than crushing the labels. */
+.pipeline__scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-inline: clamp(0.5rem, 2vw, 1rem);
+  scrollbar-width: thin;
+}
+
+.pipeline__svg {
+  display: block;
+  width: 100%;
+  min-width: 640px;
+  height: auto;
+}
+
+.pipeline__label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  fill: var(--ink-3);
+  transition: fill 0.3s var(--ease-out);
+}
+
+.pipeline__label.is-on {
+  fill: var(--ink);
+}
+
+.pipeline__sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  fill: var(--ink-3);
+  opacity: 0.8;
+}
+
+.pipeline__verdict {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  fill: var(--good);
+}

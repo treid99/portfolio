@@ -1,0 +1,396 @@
+.case {
+  padding-bottom: clamp(3.5rem, 8vw, 6rem);
+}
+
+.case__head {
+  position: relative;
+  padding-block: clamp(2rem, 5vw, 3.5rem) clamp(2.25rem, 5vw, 3.5rem);
+  border-bottom: 1px solid var(--border);
+  background:
+    radial-gradient(80% 120% at 12% 0%, var(--accent-soft), transparent 58%),
+    var(--bg-sunk);
+}
+
+.case__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--ink-3);
+  transition: color 0.18s var(--ease-out);
+}
+
+.case__back:hover {
+  color: var(--accent-ink);
+}
+
+.case__back svg {
+  transition: transform 0.2s var(--ease-out);
+}
+
+.case__back:hover svg {
+  transform: translateX(-3px);
+}
+
+.case__meta {
+  margin-top: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.case__year {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--ink-3);
+}
+
+.case__title {
+  margin-top: var(--space-3);
+  font-size: var(--step-4);
+  letter-spacing: -0.032em;
+}
+
+.case__summary {
+  margin-top: var(--space-4);
+  max-width: 62ch;
+  font-size: var(--step-1);
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.case__tags {
+  margin-top: var(--space-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.case__actions {
+  margin-top: var(--space-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+/*
+ * The repository button for a project with no public source: present, plainly
+ * inert, and not a hover target pretending it might still go somewhere.
+ */
+.case__actions .btn--locked {
+  border-color: var(--border);
+  background: var(--surface-2);
+  color: var(--ink-3);
+  cursor: not-allowed;
+}
+
+.case__actions .btn--locked:hover {
+  transform: none;
+  border-color: var(--border);
+  color: var(--ink-3);
+}
+
+/* The only heading left on the page is the one above the screenshots. */
+.case__section-title {
+  font-size: var(--step-2);
+}
+
+/* ---------- Screenshots ---------- */
+.case__gallery {
+  margin-top: clamp(2.25rem, 5vw, 3.5rem);
+}
+
+.case__gallery-note {
+  margin-top: var(--space-3);
+  font-size: 0.9rem;
+  color: var(--ink-3);
+}
+
+.case__shot-group {
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+.case__shot-group-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.shots {
+  margin-top: var(--space-5);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: clamp(1rem, 2.5vw, 1.6rem);
+}
+
+.shot {
+  margin: 0;
+  min-width: 0;
+}
+
+.shot--wide {
+  grid-column: 1 / -1;
+}
+
+/*
+ * The captures are whole pages — some over 6000px tall — so a card shows a
+ * fixed-ratio crop of the top and the viewer shows the rest.
+ */
+.shot__frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-sunk);
+  cursor: zoom-in;
+  transition:
+    border-color 0.25s var(--ease-out),
+    transform 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out);
+}
+
+.shot--wide .shot__frame {
+  aspect-ratio: 2 / 1;
+}
+
+.shot__frame:hover,
+.shot__frame:focus-visible {
+  border-color: var(--accent-line);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.shot__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* A phone capture cropped to landscape would be a strip of status bar. */
+.shot--phone .shot__img {
+  object-fit: contain;
+  padding: var(--space-4);
+}
+
+.shot__zoom {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--ink-2);
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.2s var(--ease-out),
+    transform 0.2s var(--ease-out);
+}
+
+.shot__frame:hover .shot__zoom,
+.shot__frame:focus-visible .shot__zoom {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Holds the row height steady if a screenshot is ever missing. */
+.shot__pending {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-sunk);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.shot__caption {
+  margin-top: 0.7rem;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* ---------- Screenshot viewer ---------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  /* Above the nav (100) and the resume menu (150), below the skip link (200). */
+  z-index: 180;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.5rem, 3vw, 2rem);
+}
+
+.lightbox__scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--ink) 72%, transparent);
+  backdrop-filter: blur(3px);
+  cursor: zoom-out;
+}
+
+.lightbox__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(1100px, 100%);
+  max-height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.lightbox__panel:focus {
+  outline: none;
+}
+
+.lightbox__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 0 0 auto;
+  padding: 0.7rem clamp(0.7rem, 2vw, 1.1rem);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-sunk);
+}
+
+.lightbox__caption {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.lightbox__count {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-3);
+}
+
+.lightbox__btn {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 0.18s var(--ease-out),
+    color 0.18s var(--ease-out);
+}
+
+.lightbox__btn:hover {
+  border-color: var(--accent-line);
+  color: var(--accent-ink);
+}
+
+/* Full-page captures stay at full width and scroll, rather than shrinking. */
+.lightbox__scroll {
+  flex: 1 1 auto;
+  /* Without this a flex item refuses to shrink below its content, so a tall
+     capture would push the panel past the viewport instead of scrolling. */
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: var(--bg-sunk);
+}
+
+.lightbox__scroll img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 640px) {
+  .lightbox__caption {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shot__frame,
+  .shot__zoom {
+    transition: none;
+  }
+  .shot__frame:hover,
+  .shot__frame:focus-visible {
+    transform: none;
+  }
+}
+
+/* ---------- Next ---------- */
+.case__next {
+  display: block;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  padding: clamp(1.25rem, 3vw, 1.9rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  transition:
+    border-color 0.25s var(--ease-out),
+    transform 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out);
+}
+
+.case__next:hover {
+  border-color: var(--accent-line);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.case__next-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.case__next-title {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: var(--step-2);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.case__next-blurb {
+  display: block;
+  margin-top: 0.4rem;
+  max-width: 62ch;
+  font-size: 0.92rem;
+  color: var(--ink-2);
+}
+

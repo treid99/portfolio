@@ -1,0 +1,62 @@
+/*
+ * A two-position track rather than an icon that swaps: both themes are on
+ * show, and the thumb marks the one in force.
+ */
+.theme-switch {
+  --switch-pad: 3px;
+  --switch-side: 32px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--switch-pad);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  transition:
+    border-color 0.2s var(--ease-out),
+    background-color 0.2s var(--ease-out);
+}
+
+.theme-switch:hover {
+  border-color: var(--accent-line);
+}
+
+/* Sits under the icons and travels the width of one side. */
+.theme-switch__thumb {
+  position: absolute;
+  top: var(--switch-pad);
+  left: var(--switch-pad);
+  width: var(--switch-side);
+  height: calc(100% - var(--switch-pad) * 2);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  border: 1px solid var(--accent-line);
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-switch__side {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--switch-side);
+  height: 30px;
+  color: var(--ink-3);
+  transition: color 0.2s var(--ease-out);
+}
+
+/* The half the thumb is under is the live setting. */
+.theme-switch.is-dark .theme-switch__side:first-of-type,
+.theme-switch.is-light .theme-switch__side:last-of-type {
+  color: var(--accent-ink);
+}
+
+.theme-switch:hover .theme-switch__side {
+  color: var(--ink-2);
+}
+
+.theme-switch:hover.is-dark .theme-switch__side:first-of-type,
+.theme-switch:hover.is-light .theme-switch__side:last-of-type {
+  color: var(--accent-ink);
+}

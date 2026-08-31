@@ -1,0 +1,219 @@
+.projects__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.projects__all {
+  flex-shrink: 0;
+  font-size: 0.88rem;
+  padding: 0.5rem 0.95rem;
+}
+
+.projects__grid {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+@media (max-width: 720px) {
+  .projects__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.project {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: clamp(1.25rem, 2.4vw, 1.6rem);
+  overflow: hidden;
+  transition:
+    transform 0.25s var(--ease-out),
+    border-color 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out);
+}
+
+.project::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(90% 70% at 50% 0%, var(--accent-soft), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-out);
+  pointer-events: none;
+}
+
+.project:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow);
+}
+
+.project:hover::after {
+  opacity: 1;
+}
+
+/*
+ * A card with no write-up behind it. The lift and the glow both read as "this
+ * opens something", so a card that opens nothing keeps still.
+ */
+.project--static:hover {
+  transform: none;
+  border-color: var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.project--static:hover::after {
+  opacity: 0;
+}
+
+.project__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* Status and provenance travel together, with the year opposite them. */
+.project__flags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.project__status {
+  padding: 0.14rem 0.55rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.project__status--active {
+  background: var(--good-soft);
+  color: var(--good);
+  border-color: var(--good);
+}
+
+.project__status--maintained {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  border-color: var(--accent-line);
+}
+
+.project__status--experiment {
+  background: var(--warm-soft);
+  color: var(--warm);
+  border-color: var(--warm);
+}
+
+.project__status--archived {
+  background: var(--surface-2);
+  color: var(--ink-3);
+  border-color: var(--border);
+}
+
+/*
+ * Deliberately neutral in both variants: colour on this row already means
+ * lifecycle state, so provenance is carried by the word instead.
+ */
+.project__kind {
+  padding: 0.14rem 0.55rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  border: 1px solid var(--border-strong);
+}
+
+.project__year {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--ink-3);
+}
+
+.project__title {
+  margin-top: var(--space-4);
+  font-size: var(--step-2);
+}
+
+/*
+ * Deliberately unpositioned: .project__hit stretches to the nearest positioned
+ * ancestor, and that has to be the card, not this title link.
+ */
+.project__link {
+  display: inline-block;
+  transition: color 0.2s var(--ease-out);
+}
+
+.project:hover .project__link {
+  color: var(--accent-ink);
+}
+
+/* Stretched hit area so the whole card opens the case study. */
+.project__hit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.project__blurb {
+  margin-top: var(--space-3);
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.project__tags {
+  margin-top: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.project__foot {
+  margin-top: auto;
+  padding-top: var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  font-size: 0.88rem;
+}
+
+/* Sits above the stretched link so the repo icon stays independently clickable. */
+.project__repo {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink-2);
+  transition:
+    color 0.18s var(--ease-out),
+    border-color 0.18s var(--ease-out),
+    background-color 0.18s var(--ease-out);
+}
+
+.project__repo:hover {
+  color: var(--accent-ink);
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}

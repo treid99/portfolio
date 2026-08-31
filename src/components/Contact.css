@@ -1,0 +1,54 @@
+/*
+ * Tighter than the other sections. The panel is now an eyebrow above a row of
+ * buttons, so the section rhythm sized for a title and a lede leaves it
+ * stranded in whitespace.
+ */
+.section.contact {
+  padding-block: clamp(2.25rem, 4.5vw, 3.25rem);
+}
+
+.contact__panel {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border-radius: calc(var(--radius-lg) + 6px);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.contact__glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(70% 90% at 20% 0%, var(--accent-soft), transparent 60%),
+    radial-gradient(60% 80% at 85% 100%, var(--warm-soft), transparent 62%);
+}
+
+.contact__panel .eyebrow {
+  justify-content: center;
+}
+
+.contact__lede {
+  margin: var(--space-4) auto 0;
+  max-width: 52ch;
+  font-size: var(--step-1);
+  color: var(--ink-2);
+}
+
+.contact__actions {
+  margin-top: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.contact__mail {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+}

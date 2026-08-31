@@ -1,0 +1,65 @@
+.backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Engineering grid, faded out toward the edges so it never fights the copy. */
+.backdrop__grid {
+  position: absolute;
+  inset: -1px;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 68px 68px;
+  mask-image: radial-gradient(120% 90% at 22% 28%, #000 0%, transparent 72%);
+  -webkit-mask-image: radial-gradient(120% 90% at 22% 28%, #000 0%, transparent 72%);
+}
+
+.backdrop__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+
+.backdrop__glow--a {
+  width: 42vw;
+  height: 42vw;
+  max-width: 560px;
+  max-height: 560px;
+  top: -14%;
+  left: -8%;
+  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 68%);
+  opacity: 0.95;
+}
+
+.backdrop__glow--b {
+  width: 36vw;
+  height: 36vw;
+  max-width: 480px;
+  max-height: 480px;
+  bottom: -18%;
+  right: 6%;
+  background: radial-gradient(circle, var(--warm-soft) 0%, transparent 68%);
+  opacity: 0.8;
+}
+
+.backdrop__signals {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.55;
+  /* Confined to the left gutter so the traces never cross the copy. */
+  mask-image: linear-gradient(to right, #000 0%, #000 6%, transparent 21%);
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 6%, transparent 21%);
+}
+
+@media (max-width: 720px) {
+  .backdrop__signals {
+    display: none;
+  }
+}

@@ -1,0 +1,93 @@
+.resume-dl {
+  position: relative;
+  display: inline-flex;
+}
+
+.resume-dl--block {
+  display: flex;
+  width: 100%;
+}
+
+.resume-dl__trigger {
+  cursor: pointer;
+}
+
+.resume-dl--block .resume-dl__trigger {
+  width: 100%;
+}
+
+.resume-dl__caret {
+  transition: transform 0.18s var(--ease-out);
+  opacity: 0.75;
+}
+
+.resume-dl.is-open .resume-dl__caret {
+  transform: rotate(180deg);
+}
+
+/* --- Menu --- */
+.resume-dl__menu {
+  min-width: 13rem;
+  padding: 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  animation: resume-dl-in 0.16s var(--ease-out);
+}
+
+/*
+ * Portalled to <body> and positioned from the trigger's rect, so it escapes
+ * the hero's `overflow: hidden` / `isolation: isolate` and the sticky nav.
+ * Below the skip link (z-index 200) so keyboard users can always reach it.
+ */
+.resume-dl__menu--floating {
+  position: fixed;
+  z-index: 150;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Inside the mobile sheet the menu stays in the flow so it cannot spill
+   past the sheet and float over the page behind it. */
+.resume-dl--inline {
+  flex-direction: column;
+}
+
+.resume-dl--inline .resume-dl__menu {
+  width: 100%;
+  margin-top: 0.45rem;
+  background: var(--surface-2);
+}
+
+@keyframes resume-dl-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.resume-dl__item {
+  display: block;
+  padding: 0.55rem 0.65rem;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-size: var(--step-0);
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s var(--ease-out),
+    color 0.15s var(--ease-out);
+}
+
+.resume-dl__item:hover,
+.resume-dl__item:focus-visible {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.resume-dl__meta {
+  margin: 0.15rem 0.65rem 0.35rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--border);
+  font-size: var(--step--1);
+  color: var(--ink-3);
+}
