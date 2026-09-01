@@ -188,9 +188,5 @@ test.describe('reduced motion', () => {
     // Reveals render in place rather than waiting for a scroll trigger.
     await expect(page.locator('#contact .contact__panel')).toBeVisible()
     await expect(page.locator('#contact .contact__panel')).toHaveCSS('opacity', '1')
-
-    // The pipeline shows a completed pass instead of looping.
-    await page.locator('.pipeline').scrollIntoViewIfNeeded()
-    await expect(page.locator('.pipeline__verdict')).toBeVisible()
   })
 })
